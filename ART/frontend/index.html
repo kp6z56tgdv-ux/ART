@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ART - Aplicativos de Reservas Tabasco</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo logo-index">ART Reservas</div>
+      <nav>
+        <a href="admin/login.html">Inicia sesión</a>
+        <a href="#" onclick="abrirHistorial(); return false;">Historial</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="alertas" style="margin-bottom: 20px;"></div>
+
+    <!-- Sección de Salas -->
+    <div class="section" id="inicio">
+      <h1 class="section-title">Nuestras Salas Disponibles</h1>
+      <p class="section-subtitle">Selecciona una sala para realizar tu reserva</p>
+      <div class="grid" id="salasGrid"></div>
+      <div style="text-align:center; color:var(--text-secondary); font-size:13px; margin-top:10px;">Haz clic en una sala para reservar</div>
+    </div>
+
+    <div class="section" id="reservas-futuras">
+      <h2 class="section-title">Reservas futuras</h2>
+      <p class="section-subtitle">Fechas proximas ya reservadas en las salas</p>
+      <div id="reservasFuturasContainer" class="reservas-futuras-list"></div>
+      <div class="section-actions">
+        <button class="btn btn-secondary" type="button" onclick="abrirHistorial(); return false;">Ver historial completo</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal de Reserva -->
+  <div id="reservaModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Reservar Sala</h2>
+        <button class="close-btn" id="closeBtn">&times;</button>
+      </div>
+
+      <div id="salaInfo" style="margin-bottom: 30px; padding: 18px; background: linear-gradient(135deg, var(--primary-lighter) 0%, #f0f5fa 100%); border-radius: 12px; border-left: 4px solid var(--primary-light);">
+        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Sala Seleccionada</p>
+        <p style="font-size: 20px; font-weight: 800; color: var(--primary); margin: 0;" id="salaReservarNombre"></p>
+      </div>
+
+      <form id="formularioReserva" onsubmit="crearReserva(event)">
+        <div class="form-group">
+          <label for="nombrePersona">Nombre Completo *</label>
+          <input type="text" id="nombrePersona" name="nombrePersona" required placeholder="Ej: Juan García">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="emailPersona">Correo Electrónico</label>
+            <input type="email" id="emailPersona" name="emailPersona" placeholder="tu@correo.com">
+          </div>
+
+          <div class="form-group">
+            <label for="telefonoPersona">Teléfono</label>
+            <input type="tel" id="telefonoPersona" name="telefonoPersona" placeholder="+34 123 456 789">
+          </div>
+        </div>
+
+        <!-- Sección de Fecha y Hora Mejorada -->
+        <div style="background: var(--primary-lighter); padding: 25px; border-radius: 12px; margin-bottom: 28px; border-left: 4px solid var(--primary-light);">
+          <h3 style="margin-top: 0; color: var(--primary); font-size: 16px; margin-bottom: 20px;">📅 Fecha y Hora de la Reserva</h3>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fechaReserva">Selecciona la Fecha *</label>
+              <input type="date" id="fechaReserva" name="fechaReserva" required style="padding: 18px;">
+            </div>
+
+            <div class="form-group">
+              <label for="horaInicio">Hora de Inicio *</label>
+              <div style="display: flex; gap: 10px;">
+                <select id="horaInicioH" style="flex: 1; padding: 16px 18px; border: 2px solid var(--border); border-radius: 10px; font-size: 15px; font-family: inherit; cursor: pointer;">
+                  <option value="">Hora</option>
+                </select>
+                <select id="horaInicioM" style="flex: 1; padding: 16px 18px; border: 2px solid var(--border); border-radius: 10px; font-size: 15px; font-family: inherit; cursor: pointer;">
+                  <option value="">Min</option>
+                </select>
+              </div>
+              <input type="time" id="horaInicio" name="horaInicio" required style="display: none;">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="horaFin">Hora de Finalización *</label>
+              <div style="display: flex; gap: 10px;">
+                <select id="horaFinH" style="flex: 1; padding: 16px 18px; border: 2px solid var(--border); border-radius: 10px; font-size: 15px; font-family: inherit; cursor: pointer;">
+                  <option value="">Hora</option>
+                </select>
+                <select id="horaFinM" style="flex: 1; padding: 16px 18px; border: 2px solid var(--border); border-radius: 10px; font-size: 15px; font-family: inherit; cursor: pointer;">
+                  <option value="">Min</option>
+                </select>
+              </div>
+              <input type="time" id="horaFin" name="horaFin" required style="display: none;">
+            </div>
+
+            <div class="form-group">
+              <label style="color: var(--text-secondary);">&nbsp;</label>
+              <div style="padding: 18px; background: var(--white); border-radius: 10px; border: 2px solid var(--border); font-size: 15px; font-weight: 600; color: var(--primary);">
+                Duración: <span id="duracionReserva">--</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección de Equipos -->
+        <div style="background: var(--primary-lighter); padding: 25px; border-radius: 12px; margin-bottom: 28px; border-left: 4px solid var(--primary-light);">
+          <h3 style="margin-top: 0; color: var(--primary); font-size: 16px; margin-bottom: 20px;">🔧 Equipos Disponibles (Opcional)</h3>
+            <div id="conflictMessage" style="display:none; margin-bottom:10px; color: var(--danger); font-weight:700;"></div>
+            <div id="equiposContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+              <div id="equiposPlaceholder" style="grid-column: 1/-1; color: var(--text-secondary);">Selecciona fecha y hora para ver los equipos disponibles.</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+          <label for="notasReserva">Notas Adicionales</label>
+          <textarea id="notasReserva" name="notasReserva" placeholder="Información adicional sobre tu reserva..."></textarea>
+        </div>
+
+        <div class="btn-group">
+          <button type="submit" id="confirmReservaBtn" class="btn btn-primary" disabled>✓ Confirmar Reserva</button>
+          <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Historial de Reservas -->
+  <div id="historialModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Historial de Reservas</h2>
+        <button class="close-btn" id="closeHistorialBtn">&times;</button>
+      </div>
+      <div class="historial-filters">
+        <input 
+          type="text" 
+          id="historialBusqueda" 
+          placeholder="🔍 Buscar por nombre, sala o fecha..." 
+          oninput="filtrarHistorial()"
+        />
+      </div>
+      <div id="historialContainer" style="max-height: 70vh; overflow-y: auto;"></div>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmación Genérico -->
+  <div id="confirmModal" class="modal">
+    <div class="modal-content" style="max-width: 450px;">
+      <div class="modal-header">
+        <h2 id="confirmTitle">Confirmación</h2>
+        <button class="close-btn" onclick="cerrarConfirm()">&times;</button>
+      </div>
+      <p id="confirmMessage" style="font-size: 16px; margin-bottom: 24px; color: var(--text);">¿Estás seguro?</p>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="confirmBtn" style="flex: 1;">Confirmar</button>
+        <button class="btn btn-secondary" onclick="cerrarConfirm()" style="flex: 1;">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/confirmDialog.js"></script>
+  <script src="/js/lazyLoad.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

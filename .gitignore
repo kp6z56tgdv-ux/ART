@@ -1,0 +1,17 @@
+# Dependencias
+node_modules/
+
+# Configuración con credenciales (usa config.example.json como plantilla)
+ART/backend/config.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# Variables de entorno
+.env
+.env.local
+
+# Sistema operativo
+.DS_Store
+Thumbs.db

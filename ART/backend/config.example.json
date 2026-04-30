@@ -1,0 +1,30 @@
+{
+  "database": {
+    "host": "localhost",
+    "port": 3306,
+    "user": "DB_USER",
+    "password": "DB_PASSWORD",
+    "database": "art_db",
+    "connectionLimit": 10
+  },
+  "server": {
+    "port": 3008,
+    "environment": "development"
+  },
+  "auth": {
+    "jwtSecret": "CHANGE_THIS_SECRET_IN_PRODUCTION",
+    "jwtExpiresIn": "24h"
+  },
+  "app": {
+    "baseUrl": "http://localhost:3008"
+  },
+  "email": {
+    "user": "your_email@gmail.com",
+    "pass": "your_app_password",
+    "destinatarios": [
+      "recipient1@example.com",
+      "recipient2@example.com"
+    ],
+    "adminEmail": "admin@example.com"
+  }
+}

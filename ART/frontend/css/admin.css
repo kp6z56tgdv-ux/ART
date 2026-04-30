@@ -1,0 +1,383 @@
+/* ═══════════════════════════════════ ADMIN PANEL STYLES ═══════════════════════════════════ */
+
+.admin-header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: var(--white);
+  padding: 40px;
+  border-radius: 12px;
+  margin-bottom: 40px;
+  box-shadow: var(--shadow-lg);
+}
+
+.admin-header h1 {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  font-family: 'Lato', sans-serif;
+}
+
+.admin-header p {
+  margin-top: 12px;
+  opacity: 0.95;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: 'Lato', sans-serif;
+}
+
+/* ═══════════════════════════════════ TABS ═══════════════════════════════════ */
+.tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 40px;
+  border-bottom: 2px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  padding: 16px 28px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text-secondary);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  position: relative;
+  margin-bottom: -2px;
+  font-family: 'Lato', sans-serif;
+}
+
+.tab-btn:hover {
+  color: var(--primary-light);
+}
+
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary-light);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ═══════════════════════════════════ ADMIN CONTROLS ═══════════════════════════════════ */
+.admin-controls {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: var(--primary-lighter);
+  border-radius: 10px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-left: 4px solid var(--primary-light);
+}
+
+.account-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: #f7f9fb;
+  border: 1px solid #dbe4ec;
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin-bottom: 30px;
+}
+
+.account-action-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.account-action-buttons .btn {
+  min-width: 170px;
+}
+
+/* ═══════════════════════════════════ CARD ═══════════════════════════════════ */
+
+.card {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 28px 22px 18px 22px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow-lg);
+  border-left: 6px solid var(--primary-light);
+  transition: box-shadow 0.3s, border 0.3s, transform 0.2s;
+  animation: fadeIn 0.5s;
+}
+.card:hover {
+  box-shadow: 0 8px 32px rgba(26,58,82,0.10), var(--shadow-lg);
+  transform: translateY(-4px) scale(1.01);
+  border-color: var(--primary);
+}
+
+.card h4 {
+  color: var(--primary);
+  font-size: 17px;
+  margin: 0 0 12px 0;
+  font-weight: 700;
+  font-family: 'Lato', sans-serif;
+}
+
+.card p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin: 8px 0;
+  line-height: 1.5;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gap-10 {
+  gap: 10px;
+}
+
+/* ═══════════════════════════════════ BADGES ═══════════════════════════════════ */
+.badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-right: 8px;
+  margin-top: 8px;
+}
+
+.badge-info {
+  background: var(--primary-lighter);
+  color: var(--primary-light);
+}
+
+.badge-success {
+  background: #d4edda;
+  color: #155724;
+}
+
+.badge-warning {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.badge-danger {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* ═══════════════════════════════════ FORMULARIOS ═══════════════════════════════════ */
+.form-section {
+  background: var(--white);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  margin-bottom: 30px;
+}
+
+.form-section h3 {
+  color: var(--primary);
+  margin-top: 0;
+  margin-bottom: 30px;
+  font-size: 22px;
+  font-weight: 700;
+  font-family: 'Lato', sans-serif;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 12px;
+  font-size: 14px;
+  text-transform: capitalize;
+  font-family: 'Lato', sans-serif;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 16px 18px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: 'Lato', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 4px var(--primary-lighter);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+/* ═══════════════════════════════════ UTILIDADES ═══════════════════════════════════ */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .admin-header {
+    padding: 25px;
+  }
+
+  .admin-header h1 {
+    font-size: 28px;
+  }
+
+  .flex-between {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .tabs {
+    gap: 0;
+    overflow-x: auto;
+  }
+
+  .tab-btn {
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+}
+
+/* ═══════════════════════════════════ REPORTES MODAL ═══════════════════════════════════ */
+
+#reportesModal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.3s ease;
+}
+
+#reportesModal.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#reportesModal .modal-content {
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  animation: slideUp 0.3s ease;
+}
+
+#reportesModal .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, var(--primary-lighter) 0%, #f0f4f8 100%);
+  border-radius: 12px 12px 0 0;
+}
+
+#reportesModal h2 {
+  margin: 0;
+  color: var(--primary);
+  font-size: 24px;
+  font-weight: 700;
+  font-family: 'Lato', sans-serif;
+}
+
+#reportesModal .close-btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+#reportesModal .close-btn:hover {
+  color: var(--primary);
+}
+
+#reportesModal .tabs {
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 0;
+}
+
+#reportesModal .tab-btn {
+  font-family: 'Lato', sans-serif;
+}
+
+#reportesModal .tab-content {
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

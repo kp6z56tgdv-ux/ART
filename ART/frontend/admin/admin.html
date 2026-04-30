@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Administrativo - ART Reservas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+  <header class="admin-header-main">
+    <div class="header-content">
+      <div class="header-left">
+        <span id="adminUsernameDisplay" class="admin-greeting">Hola, administrador</span>
+      </div>
+      <div class="header-right">
+        <button class="header-btn header-btn-secondary" onclick="abrirModalCuenta()">Mi Cuenta</button>
+        <button class="header-btn header-btn-danger" onclick="cerrarSesion()">Cerrar Sesión</button>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding: 40px 30px;">
+    <div class="container">
+      <div id="alertasAdmin" style="margin-bottom: 20px;"></div>
+
+      <div class="admin-header">
+        <h1>Panel Administrativo</h1>
+        <p style="margin-top: 10px; opacity: 0.9;">Gestiona las salas, equipos y reservas del sistema</p>
+      </div>
+
+      <!-- Tabs de Navegación -->
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="salas-tab">Gestión de Salas</button>
+        <button class="tab-btn" data-tab="equipos-tab">Gestión de Equipos</button>
+        <button class="tab-btn" data-tab="reservas-tab">Gestión de Reservas</button>
+        <button class="tab-btn" data-tab="emails-tab">Correos de Notificación</button>
+      </div>
+
+      <!-- TAB 1: SALAS -->
+      <div id="salas-tab" class="tab-content active">
+        <div class="admin-controls">
+          <button class="btn btn-primary" onclick="abrirModalCrearSala()">+ Agregar Nueva Sala</button>
+        </div>
+        <div id="salasAdminList"></div>
+      </div>
+
+      <!-- TAB 2: EQUIPOS -->
+      <div id="equipos-tab" class="tab-content">
+        <div class="admin-controls">
+          <button class="btn btn-primary" onclick="abrirModalCrearEquipo()">+ Agregar Nuevo Equipo</button>
+        </div>
+        <div id="equiposAdminList"></div>
+      </div>
+
+      <!-- TAB 4: CORREOS DE NOTIFICACIÓN -->
+      <div id="emails-tab" class="tab-content">
+        <div class="admin-controls">
+          <button class="btn btn-primary" onclick="abrirFormCorreo()">+ Agregar Correo</button>
+        </div>
+
+        <!-- Formulario inline para agregar/editar -->
+        <div id="formCorreoContainer" style="display:none; background: var(--white); padding: 24px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 24px;">
+          <h3 id="formCorreoTitle" style="margin: 0 0 20px; color: var(--primary);">Agregar Correo</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group" style="margin: 0;">
+              <label for="correoEmail">Correo electrónico *</label>
+              <input type="email" id="correoEmail" placeholder="ejemplo@dominio.com" style="padding: 12px;">
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <label for="correoNombre">Nombre (opcional)</label>
+              <input type="text" id="correoNombre" placeholder="Ej: María López" style="padding: 12px;">
+            </div>
+          </div>
+          <input type="hidden" id="correoId">
+          <div style="display: flex; gap: 12px; margin-top: 20px;">
+            <button class="btn btn-primary" onclick="guardarCorreo()" style="padding: 12px 24px;">Guardar</button>
+            <button class="btn btn-secondary" onclick="cerrarFormCorreo()" style="padding: 12px 24px;">Cancelar</button>
+          </div>
+        </div>
+
+        <div id="emailsAdminList"></div>
+      </div>
+
+      <!-- TAB 3: RESERVAS -->
+      <div id="reservas-tab" class="tab-content">
+        <div class="admin-controls">
+          <button class="btn btn-secondary" onclick="location.reload()">Actualizar</button>
+          <button class="btn btn-primary" onclick="abrirModalReportes()" style="margin-left: 10px;">📊 Ver Reportes</button>
+        </div>
+        
+        <!-- Filtros de búsqueda -->
+        <div style="background: var(--white); padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 1px solid var(--border);">
+          <h3 style="margin-top: 0; color: var(--primary); margin-bottom: 15px;">🔍 Buscar y Filtrar</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+            <input type="text" id="filtroNombre" placeholder="Buscar por nombre..." style="padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: 'Lato', sans-serif;">
+            <select id="filtroEstado" style="padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: 'Lato', sans-serif; cursor: pointer;">
+              <option value="">-- Todos los estados --</option>
+              <option value="activa">Activas</option>
+              <option value="cancelada">Canceladas</option>
+              <option value="completada">Completadas</option>
+            </select>
+            <input type="date" id="filtroFechaInicio" style="padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: 'Lato', sans-serif;">
+            <input type="date" id="filtroFechaFin" style="padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: 'Lato', sans-serif;">
+            <button class="btn btn-primary" onclick="aplicarFiltrosReservas()" style="padding: 12px;">Buscar</button>
+            <button class="btn btn-secondary" onclick="limpiarFiltrosReservas()" style="padding: 12px;">Limpiar</button>
+          </div>
+        </div>
+
+        <div id="reservasAdminList"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal para Salas y Equipos -->
+  <div id="adminModal" class="modal">
+    <div class="modal-content" style="max-width: 95%; width: 95%; max-height: 95vh;">
+      <div class="modal-header">
+        <h2 id="formSalaTitle">Crear Nueva Sala</h2>
+        <button class="close-btn" id="adminModalClose">&times;</button>
+      </div>
+
+      <!-- Formulario Sala -->
+      <form id="formSala" onsubmit="guardarSala(event)" style="display: block;">
+        <input type="hidden" id="salaId">
+
+        <div class="form-group">
+          <label for="salaNombre">Nombre de la Sala *</label>
+          <input type="text" id="salaNombre" required placeholder="Ej: Sala de Conferencias" style="padding: 16px;">
+        </div>
+
+        <div class="form-group">
+          <label for="salaDescripcion">Descripción</label>
+          <textarea id="salaDescripcion" placeholder="Describe la sala..." style="padding: 16px;"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; margin-bottom: 16px;">
+            <input type="checkbox" id="salaAire" style="width: 18px; height: 18px; cursor: pointer;">
+            <span style="color: var(--primary); font-weight: 600;">Incluye Aire Acondicionado</span>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+            <input type="checkbox" id="salaTV" style="width: 18px; height: 18px; cursor: pointer;">
+            <span style="color: var(--primary); font-weight: 600;">Incluye Televisión</span>
+          </label>
+        </div>
+
+        <div style="display: flex; gap: 14px; margin-top: 35px;">
+          <button type="submit" class="btn btn-primary" style="flex: 1; padding: 16px;">Guardar Sala</button>
+          <button type="button" class="btn btn-secondary" onclick="cerrarModal()" style="flex: 1; padding: 16px;">Cancelar</button>
+        </div>
+      </form>
+
+      <!-- Formulario Equipo -->
+      <form id="formEquipo" onsubmit="guardarEquipo(event)" style="display: none;">
+        <input type="hidden" id="equipoId">
+
+        <div class="form-group">
+          <label for="equipoNombre">Nombre del Equipo *</label>
+          <input type="text" id="equipoNombre" required placeholder="Ej: Videobeam" style="padding: 16px;">
+        </div>
+
+        <div class="form-group">
+          <label for="equipoDescripcion">Descripción</label>
+          <textarea id="equipoDescripcion" placeholder="Describe el equipo..." style="padding: 16px;"></textarea>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="equipoCantidad">Cantidad Total *</label>
+            <input type="number" id="equipoCantidad" min="1" value="1" required style="padding: 16px;">
+          </div>
+
+          <div class="form-group">
+            <label for="equipoDisponible">Cantidad Disponible *</label>
+            <input type="number" id="equipoDisponible" min="0" value="1" required style="padding: 16px;">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 14px; margin-top: 35px;">
+          <button type="submit" class="btn btn-primary" style="flex: 1; padding: 16px;">Guardar Equipo</button>
+          <button type="button" class="btn btn-secondary" onclick="cerrarModal()" style="flex: 1; padding: 16px;">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Mi Cuenta -->
+  <div id="modalCuenta" class="modal">
+    <div class="modal-content" style="max-width: 420px; width: 95%;">
+      <div class="modal-header">
+        <h2>Mi Cuenta</h2>
+        <button class="close-btn" onclick="cerrarModalCuenta()">&times;</button>
+      </div>
+
+      <div id="cuentaAlerta" style="display:none; margin-bottom: 16px;"></div>
+
+      <form id="formCuenta" onsubmit="guardarCuenta(event)">
+        <div class="form-group">
+          <label for="cuentaUsuario">Usuario</label>
+          <input type="text" id="cuentaUsuario" disabled style="padding: 14px; background: #f5f5f5; cursor: not-allowed;">
+        </div>
+
+        <div class="form-group">
+          <label for="cuentaPasswordActual">Contraseña actual *</label>
+          <input type="password" id="cuentaPasswordActual" required placeholder="Ingresa tu contraseña actual" style="padding: 14px;">
+        </div>
+
+        <div class="form-group">
+          <label for="cuentaPasswordNuevo">Nueva contraseña *</label>
+          <input type="password" id="cuentaPasswordNuevo" required placeholder="Mínimo 6 caracteres" style="padding: 14px;">
+        </div>
+
+        <div class="form-group">
+          <label for="cuentaPasswordConfirmar">Confirmar nueva contraseña *</label>
+          <input type="password" id="cuentaPasswordConfirmar" required placeholder="Repite la nueva contraseña" style="padding: 14px;">
+        </div>
+
+        <div style="display: flex; gap: 14px; margin-top: 24px;">
+          <button type="submit" class="btn btn-primary" style="flex: 1; padding: 14px;">Guardar Cambios</button>
+          <button type="button" class="btn btn-secondary" onclick="cerrarModalCuenta()" style="flex: 1; padding: 14px;">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/reportes.js"></script>
+  <script src="/admin/admin.js"></script>
+</body>
+</html>
