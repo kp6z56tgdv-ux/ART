@@ -209,17 +209,32 @@
 
         <div class="form-group">
           <label for="cuentaPasswordActual">Contraseña actual *</label>
-          <input type="password" id="cuentaPasswordActual" required placeholder="Ingresa tu contraseña actual" style="padding: 14px;">
+          <div style="position:relative;">
+            <input type="password" id="cuentaPasswordActual" required placeholder="Ingresa tu contraseña actual" style="padding: 14px; padding-right: 48px; width: 100%; box-sizing: border-box;">
+            <button type="button" onclick="toggleAdminPassword('cuentaPasswordActual', this)" tabindex="-1" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#aaa;padding:0;display:flex;align-items:center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            </button>
+          </div>
         </div>
 
         <div class="form-group">
           <label for="cuentaPasswordNuevo">Nueva contraseña *</label>
-          <input type="password" id="cuentaPasswordNuevo" required placeholder="Mínimo 6 caracteres" style="padding: 14px;">
+          <div style="position:relative;">
+            <input type="password" id="cuentaPasswordNuevo" required placeholder="Mínimo 6 caracteres" style="padding: 14px; padding-right: 48px; width: 100%; box-sizing: border-box;">
+            <button type="button" onclick="toggleAdminPassword('cuentaPasswordNuevo', this)" tabindex="-1" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#aaa;padding:0;display:flex;align-items:center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            </button>
+          </div>
         </div>
 
         <div class="form-group">
           <label for="cuentaPasswordConfirmar">Confirmar nueva contraseña *</label>
-          <input type="password" id="cuentaPasswordConfirmar" required placeholder="Repite la nueva contraseña" style="padding: 14px;">
+          <div style="position:relative;">
+            <input type="password" id="cuentaPasswordConfirmar" required placeholder="Repite la nueva contraseña" style="padding: 14px; padding-right: 48px; width: 100%; box-sizing: border-box;">
+            <button type="button" onclick="toggleAdminPassword('cuentaPasswordConfirmar', this)" tabindex="-1" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#aaa;padding:0;display:flex;align-items:center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            </button>
+          </div>
         </div>
 
         <div style="display: flex; gap: 14px; margin-top: 24px;">
@@ -230,6 +245,18 @@
     </div>
   </div>
 
+  <script>
+    const EYE_OPEN = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>';
+    const EYE_CLOSED = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.97 9.97 0 012.189-3.668M6.53 6.533A9.97 9.97 0 0112 5c4.477 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411M3 3l18 18"/></svg>';
+
+    function toggleAdminPassword(inputId, btn) {
+      const input = document.getElementById(inputId);
+      const isHidden = input.type === 'password';
+      input.type = isHidden ? 'text' : 'password';
+      btn.style.color = isHidden ? 'var(--primary)' : '#aaa';
+      btn.innerHTML = isHidden ? EYE_CLOSED : EYE_OPEN;
+    }
+  </script>
   <script src="/js/reportes.js"></script>
   <script src="/admin/admin.js"></script>
 </body>
